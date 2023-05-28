@@ -57,4 +57,29 @@ public class Organizer {
     public void setStates(List<String> states) {
         this.states = states;
     }
+
+    public String toJson() {
+        String json = "{";
+
+        json += "\"id\":" + id + ",";
+        json += "\"name\":\"" + name + "\",";
+        json += "\"description\":\"" + description + "\",";
+        json += "\"url\":\"" + url + "\",";
+        json += "\"raceType\":\"" + raceType + "\",";
+        json += "\"states\":[";
+
+        int count = 0;
+        for(String state : states) {
+            if(count > 0) {
+                json += ",";
+            }
+
+            json += "\"" + state + "\"";
+            count++;
+        }
+
+        json += "]}";
+
+        return json;
+    }
 }

@@ -1,0 +1,10 @@
+{
+  "id": 4,
+  "name": "Boston Marathon",
+  "description": "Boston Marathon Athletic Club",
+  "url": "https://www.baa.org",
+  "raceType": "run",
+  "states": [
+    "MA"
+  ]
+}

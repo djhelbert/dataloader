@@ -32,6 +32,7 @@ public class Util {
                     org.setStates(Arrays.asList(states));
 
                     organizers.add(org);
+                    System.out.println(org.toJson());
                 }
                 count++;
             }
@@ -42,5 +43,10 @@ public class Util {
         }
 
         return organizers;
+    }
+
+    public static void main(String[] args) {
+        Util util = new Util();
+        util.readFile();
     }
 }

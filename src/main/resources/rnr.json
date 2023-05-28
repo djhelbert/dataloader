@@ -1,0 +1,22 @@
+{
+  "id": 3,
+  "name": "Rock n Roll",
+  "description": "Rock n Roll Marathon Series",
+  "url": "https://www.runrocknroll.com",
+  "raceType": "run",
+  "states": [
+    "AZ",
+    "CA",
+    "CO",
+    "FL",
+    "GA",
+    "IL",
+    "OH",
+    "NJ",
+    "NV",
+    "NY",
+    "MA",
+    "PN",
+    "TX"
+  ]
+}
