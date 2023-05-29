@@ -32,10 +32,11 @@ public class OrganizerHandler implements RequestHandler<S3Request, DynamoRespons
             String line = reader.readLine();
 
             while (line != null) {
-                line = reader.readLine(); // Ignore header
-                if(response.count > 0) {
+                System.out.println(line);
+                if (response.count > 0) { // Ignore header
                     persistData(Util.getOrganizer(line));
                 }
+                line = reader.readLine();
                 response.count++;
             }
         } catch (FileNotFoundException e) {
@@ -54,7 +55,10 @@ public class OrganizerHandler implements RequestHandler<S3Request, DynamoRespons
     private PutItemResult persistData(Organizer organizer) throws ConditionalCheckFailedException {
         final Map<String, AttributeValue> map = new HashMap<>();
 
-        map.put("id", new AttributeValue(String.valueOf(organizer.getId())));
+        AttributeValue id = new AttributeValue();
+        id.setN(organizer.getId().toString());
+
+        map.put("id", id);
         map.put("name", new AttributeValue(organizer.getName()));
         map.put("description", new AttributeValue(organizer.getDescription()));
         map.put("url", new AttributeValue(String.valueOf(organizer.getUrl())));
