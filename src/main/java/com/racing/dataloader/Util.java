@@ -20,16 +20,7 @@ public class Util {
 
             for(String line : lines) {
                 if(count > 0) { // Ignore header
-                    String[] parts = line.split(",");
-                    Organizer org = new Organizer();
-                    org.setId(new Integer(parts[0]));
-                    org.setName(parts[1]);
-                    org.setDescription(parts[2]);
-                    org.setRaceType(parts[3]);
-                    org.setUrl(parts[4]);
-
-                    String[] states = parts[5].split(" ");
-                    org.setStates(Arrays.asList(states));
+                    Organizer org = getOrganizer(line);
 
                     organizers.add(org);
                     System.out.println(org.toJson());
@@ -43,6 +34,20 @@ public class Util {
         }
 
         return organizers;
+    }
+
+    public static Organizer getOrganizer(String line) {
+        String[] parts = line.split(",");
+        Organizer org = new Organizer();
+        org.setId(new Integer(parts[0]));
+        org.setName(parts[1]);
+        org.setDescription(parts[2]);
+        org.setRaceType(parts[3]);
+        org.setUrl(parts[4]);
+
+        String[] states = parts[5].split(" ");
+        org.setStates(Arrays.asList(states));
+        return org;
     }
 
     public static void main(String[] args) {

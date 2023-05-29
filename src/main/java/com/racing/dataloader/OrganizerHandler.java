@@ -9,22 +9,44 @@ import com.amazonaws.services.dynamodbv2.model.PutItemResult;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OrganizerHandler implements RequestHandler<Organizer, DynamoResponse>  {
+public class OrganizerHandler implements RequestHandler<S3Request, DynamoResponse> {
     private AmazonDynamoDB amazonDynamoDB;
     private String DYNAMODB_TABLE_NAME = "Organizer";
     private Regions REGION = Regions.US_EAST_1;
 
     @Override
-    public DynamoResponse handleRequest(Organizer organizer, Context context) {
+    public DynamoResponse handleRequest(S3Request request, Context context) {
         this.initDynamoDbClient();
 
-        persistData(organizer);
-
-        DynamoResponse response = new DynamoResponse();
+        final DynamoResponse response = new DynamoResponse();
         response.message = "Success";
+
+        final S3Client s3client = new S3Client();
+        final InputStream inputStream = s3client.getObject(request.getBucketName(), request.getKey());
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line = reader.readLine();
+
+            while (line != null) {
+                line = reader.readLine(); // Ignore header
+                if(response.count > 0) {
+                    persistData(Util.getOrganizer(line));
+                }
+                response.count++;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            response.message = "Failure";
+            response.reason = e.getMessage();
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.message = "Failure";
+            response.reason = e.getMessage();
+        }
 
         return response;
     }
