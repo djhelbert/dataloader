@@ -30,14 +30,16 @@ public class OrganizerHandler implements RequestHandler<S3Request, DynamoRespons
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             String line = reader.readLine();
+            int lineNumber = 0;
 
             while (line != null) {
                 System.out.println(line);
-                if (response.count > 0) { // Ignore header
+                if (lineNumber > 0) { // Ignore header
                     persistData(Util.getOrganizer(line));
+                    response.count++;
                 }
                 line = reader.readLine();
-                response.count++;
+                lineNumber++;
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
